@@ -1,0 +1,48 @@
+/* Navbar.module.css */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #2C3E50;
+    color: #ECF0F1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navItems {
+    display: flex;
+    align-items: center;
+}
+
+.navLink {
+    color: #ECF0F1;
+    text-decoration: none;
+    margin-right: 20px;
+    position: relative;
+}
+
+.navLink:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.button {
+    background-color: #E74C3C;
+    color: #ECF0F1;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #C0392B;
+}
