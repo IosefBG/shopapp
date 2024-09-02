@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import styles from './Login.module.css';
 import {LoginFormValues} from "../../types/FormInterfaces.ts";
+import apiCall from "../../helpers/apiHelper.ts";
+import {MessageType} from "../../types/AxiosInterfaces.ts";
+import {AxiosResponse} from "axios";
+import {LoginResponse} from "../../types/LoginResponse.ts";
+import {useAuth} from "../../contexts/AuthContext.tsx";
 
 const Login = () => {
-    const [formValues, setFormValues] = useState<LoginFormValues>({ email: '', password: '' });
+    const [formValues, setFormValues] = useState<LoginFormValues>({email: '', password: ''});
     const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const validateForm = () => {
         const errors: { email?: string; password?: string } = {};
@@ -17,16 +23,31 @@ const Login = () => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        setFormValues((prev) => ({ ...prev, [id]: value }));
+        const {id, value} = e.target;
+        setFormValues((prev) => ({...prev, [id]: value}));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validateForm()) return;
-        // Replace with your login logic
-        console.log('Login:', formValues);
-        navigate('/'); // Redirect to home after successful login
+
+        try {
+            const payload = {
+                identifier: formValues.email,
+                password: formValues.password,
+            }
+            const result: AxiosResponse<LoginResponse> = await apiCall('post', '/login', payload, {
+                [MessageType.SUCCESS]: 'Registration successfully',
+                [MessageType.ERROR]: 'Registration failed. Please check your details and try again.',
+                [MessageType.WARNING]: 'Registration warning. Something might be off.',
+            });
+
+            login(result.data.user, result.data.token)
+
+            navigate('/'); // Redirect to home after successful login
+        } catch (error) {
+            // Error handling is handled by the interceptor
+        }
     };
 
     return (
@@ -37,13 +58,13 @@ const Login = () => {
                     <div className={styles.inputGroup}>
                         <label htmlFor="email">Email</label>
                         <input
-                            type="email"
+                            type="text"
                             id="email"
                             value={formValues.email}
                             onChange={handleChange}
                             className={styles.inputField}
                         />
-                        {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
+                        {errors.email && <div style={{color: 'red'}}>{errors.email}</div>}
                     </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="password">Password</label>
@@ -54,7 +75,7 @@ const Login = () => {
                             onChange={handleChange}
                             className={styles.inputField}
                         />
-                        {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
+                        {errors.password && <div style={{color: 'red'}}>{errors.password}</div>}
                     </div>
                     <button type="submit" className={styles.submitButton}>
                         Login

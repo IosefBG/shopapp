@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {CustomAxiosRequestConfig, MessageType} from "../types/AxiosInterfaces.ts";
 
 const api: AxiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/', // Replace with your API base URL
+    baseURL: 'http://localhost:8001/api', // Replace with your API base URL
     timeout: 10000,
 });
 

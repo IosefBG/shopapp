@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import styles from './Register.module.css';
-import { RegisterFormValues } from '../../types/FormInterfaces';
+import {RegisterFormValues} from '../../types/FormInterfaces';
 import apiCall from '../../helpers/apiHelper';
 import {MessageType} from "../../types/AxiosInterfaces.ts";
 
 const Register: React.FC = () => {
-    const [formValues, setFormValues] = useState<RegisterFormValues>({ email: '', password: '', confirmPassword: '' });
-    const [errors, setErrors] = useState<{ email?: string; password?: string; confirmPassword?: string }>({});
+    const [formValues, setFormValues] = useState<RegisterFormValues>({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+    const [errors, setErrors] = useState<{
+        username?: string;
+        email?: string;
+        password?: string;
+        confirmPassword?: string
+    }>({});
     const navigate = useNavigate();
 
     // Validate form fields
     const validateForm = (): boolean => {
-        const errors: { email?: string; password?: string; confirmPassword?: string } = {};
+        const errors: { username?: string, email?: string; password?: string; confirmPassword?: string } = {};
+        if (!formValues.username) errors.username = 'Username is required';
         if (!formValues.email) errors.email = 'Email is required';
         if (!formValues.password) errors.password = 'Password is required';
         if (formValues.password !== formValues.confirmPassword) errors.confirmPassword = 'Passwords do not match';
@@ -22,8 +33,8 @@ const Register: React.FC = () => {
 
     // Handle input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        setFormValues((prev) => ({ ...prev, [id]: value }));
+        const {id, value} = e.target;
+        setFormValues((prev) => ({...prev, [id]: value}));
     };
 
     // Handle form submission
@@ -32,7 +43,12 @@ const Register: React.FC = () => {
         if (!validateForm()) return;
 
         try {
-            await apiCall('post', '/register', formValues, {
+            const payload = {
+                username: formValues.username,
+                email: formValues.email,
+                password: formValues.password,
+            }
+            await apiCall('post', '/register', payload, {
                 [MessageType.SUCCESS]: 'Registration successfully',
                 [MessageType.ERROR]: 'Registration failed. Please check your details and try again.',
                 [MessageType.WARNING]: 'Registration warning. Something might be off.',
@@ -50,6 +66,17 @@ const Register: React.FC = () => {
                 <h2 className={styles.title}>Register</h2>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.inputGroup}>
+                        <label htmlFor="username">Username</label>
+                        <input
+                            type="username"
+                            id="username"
+                            value={formValues.username}
+                            onChange={handleChange}
+                            className={styles.inputField}
+                        />
+                        {errors.username && <div style={{color: 'red'}}>{errors.username}</div>}
+                    </div>
+                    <div className={styles.inputGroup}>
                         <label htmlFor="email">Email</label>
                         <input
                             type="email"
@@ -58,7 +85,7 @@ const Register: React.FC = () => {
                             onChange={handleChange}
                             className={styles.inputField}
                         />
-                        {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
+                        {errors.email && <div style={{color: 'red'}}>{errors.email}</div>}
                     </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="password">Password</label>
@@ -69,7 +96,7 @@ const Register: React.FC = () => {
                             onChange={handleChange}
                             className={styles.inputField}
                         />
-                        {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
+                        {errors.password && <div style={{color: 'red'}}>{errors.password}</div>}
                     </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="confirmPassword">Confirm Password</label>
@@ -80,7 +107,7 @@ const Register: React.FC = () => {
                             onChange={handleChange}
                             className={styles.inputField}
                         />
-                        {errors.confirmPassword && <div style={{ color: 'red' }}>{errors.confirmPassword}</div>}
+                        {errors.confirmPassword && <div style={{color: 'red'}}>{errors.confirmPassword}</div>}
                     </div>
                     <button type="submit" className={styles.submitButton}>
                         Register
