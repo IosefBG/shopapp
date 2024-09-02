@@ -1,6 +1,3 @@
-// @ts-ignore
-import Navbar from "@/components/navbar/Navbar.tsx";
-
 const Home = () => {
     return (
         <div style={{ height: '100vh'}}>

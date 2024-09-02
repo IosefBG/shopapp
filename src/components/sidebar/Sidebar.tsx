@@ -11,7 +11,7 @@ const Sidebar = () => {
 
     return (
         <div style={{
-            width: isExpanded ? '250px' : '80px', // Adjusted collapsed width
+            width: isExpanded ? '250px' : '80px',
             height: '100vh',
             backgroundColor: '#2C3E50',
             padding: '20px',
