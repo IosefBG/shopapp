@@ -1,0 +1,34 @@
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    border-bottom: 1px solid #1C2833;
+    background-color: #34495E;
+    position: relative;
+}
+
+.toolbarSearch {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.toolbarSearch input {
+    width: 15%;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.toolbarIcon {
+    cursor: pointer;
+    color: #ECF0F1;
+    margin-right: 10px;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.toolbarIcon:hover {
+    color: #1ABC9C;
+}
