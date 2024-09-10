@@ -3,7 +3,8 @@ import {useNavigate} from 'react-router-dom';
 import styles from './Register.module.css';
 import {RegisterFormValues} from '../../types/FormInterfaces';
 import apiCall from '../../helpers/apiHelper';
-import {MessageType} from "../../types/AxiosInterfaces.ts";
+import {CustomAxiosRequestConfig, MessageType} from "../../types/AxiosInterfaces.ts";
+import useAxiosInterceptor from "../../helpers/apiHelper";
 
 const Register: React.FC = () => {
     const [formValues, setFormValues] = useState<RegisterFormValues>({
@@ -19,6 +20,7 @@ const Register: React.FC = () => {
         confirmPassword?: string
     }>({});
     const navigate = useNavigate();
+    const api = useAxiosInterceptor(); // Use the custom hook to get the axios instance
 
     // Validate form fields
     const validateForm = (): boolean => {
@@ -48,11 +50,13 @@ const Register: React.FC = () => {
                 email: formValues.email,
                 password: formValues.password,
             }
-            await apiCall('post', '/register', payload, {
-                [MessageType.SUCCESS]: 'Registration successfully',
-                [MessageType.ERROR]: 'Registration failed. Please check your details and try again.',
-                [MessageType.WARNING]: 'Registration warning. Something might be off.',
-            });
+            await api.post('/register', payload, {
+                customMessages: {
+                    [MessageType.SUCCESS]: 'Registration successfully',
+                    [MessageType.ERROR]: 'Registration failed. Please check your details and try again.',
+                    [MessageType.WARNING]: 'Registration warning. Something might be off.',
+                }
+            } as CustomAxiosRequestConfig);
             // Redirect to login on successful registration
             navigate('/login');
         } catch (error) {

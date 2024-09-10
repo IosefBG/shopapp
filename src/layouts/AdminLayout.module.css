@@ -1,0 +1,113 @@
+/* AdminLayout.module.css */
+
+/* Sidebar */
+.sidebar {
+    height: 100%;
+    background-color: #2C3E50;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: width 0.3s ease;
+    border-right: 1px solid #1C2833;
+}
+
+.sidebarItemsContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: hidden;
+    flex: 1;
+}
+
+.sidebarItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Remove underline from links */
+    color: #ECF0F1;
+}
+
+.sidebarItem:hover {
+    background-color: #1ABC9C; /* Hover effect */
+}
+
+.sidebarItemIcon {
+    font-size: 24px;
+    margin-right: 10px;
+    transition: margin-right 0.3s ease;
+}
+
+.sidebarItemLabel {
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.sidebarButton {
+    align-self: center;
+    background-color: #1ABC9C;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px 0;
+}
+
+.sidebarButton:hover {
+    background-color: #16A085;
+}
+
+/* Separator Line */
+.separator {
+    border-top: 1px solid #1C2833;
+    margin: 10px 20px;
+}
+
+/* User Area */
+.userArea {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #34495E;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.userImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ECF0F1;
+    margin-right: 10px;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ECF0F1;
+}
+
+.userName {
+    font-size: 16px;
+    margin: 0;
+}
+
+.userEmail {
+    font-size: 12px;
+    margin: 0;
+    opacity: 0.8; /* Slightly faded text */
+}
+
+.userOptions {
+    margin-left: auto;
+    font-size: 16px;
+    color: #ECF0F1;
+}

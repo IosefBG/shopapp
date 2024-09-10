@@ -2,17 +2,18 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styles from './Login.module.css';
 import {LoginFormValues} from "../../types/FormInterfaces.ts";
-import apiCall from "../../helpers/apiHelper.ts";
-import {MessageType} from "../../types/AxiosInterfaces.ts";
+import {CustomAxiosRequestConfig, MessageType} from "../../types/AxiosInterfaces.ts";
 import {AxiosResponse} from "axios";
 import {LoginResponse} from "../../types/LoginResponse.ts";
 import {useAuth} from "../../contexts/AuthContext.tsx";
+import useAxiosInterceptor from "../../helpers/apiHelper.ts";
 
 const Login = () => {
     const [formValues, setFormValues] = useState<LoginFormValues>({email: '', password: ''});
     const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
     const navigate = useNavigate();
     const { login } = useAuth();
+    const api = useAxiosInterceptor(); // Use the custom hook to get the axios instance
 
     const validateForm = () => {
         const errors: { email?: string; password?: string } = {};
@@ -36,11 +37,13 @@ const Login = () => {
                 identifier: formValues.email,
                 password: formValues.password,
             }
-            const result: AxiosResponse<LoginResponse> = await apiCall('post', '/login', payload, {
-                [MessageType.SUCCESS]: 'Registration successfully',
-                [MessageType.ERROR]: 'Registration failed. Please check your details and try again.',
-                [MessageType.WARNING]: 'Registration warning. Something might be off.',
-            });
+            const result: AxiosResponse<LoginResponse> = await api.post('/login', payload, {
+                customMessages: {
+                    [MessageType.SUCCESS]: 'Login successful',
+                    [MessageType.ERROR]: 'Login failed. Please check your details and try again.',
+                    [MessageType.WARNING]: 'Login warning. Something might be off.',
+                },
+            } as CustomAxiosRequestConfig);
 
             login(result.data.user, result.data.token)
 

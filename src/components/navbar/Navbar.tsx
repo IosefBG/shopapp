@@ -8,7 +8,6 @@ import {useAuth} from "../../contexts/AuthContext.tsx"; // Import the CSS module
 
 const Navbar: React.FC = () => {
     const {isAuthenticated, user, logout} = useAuth();
-
     return (
         <nav className={styles.navbar}>
             <div className={styles.navItems}>
@@ -22,11 +21,14 @@ const Navbar: React.FC = () => {
             <div>
                 {isAuthenticated ? (
                     <>
+                        <Link to="/admin" className={styles.button}>
+                            <FontAwesomeIcon icon={faSignInAlt}/> Admin
+                        </Link>
                         <Link to="/profile" className={styles.button}>
-                            <FontAwesomeIcon icon={faSignInAlt} /> Profile
+                            <FontAwesomeIcon icon={faSignInAlt}/> Profile
                         </Link>
                         <button onClick={logout} className={styles.button}>
-                            <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+                            <FontAwesomeIcon icon={faSignOutAlt}/> Logout
                         </button>
                     </>
                 ) : (
