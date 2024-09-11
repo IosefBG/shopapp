@@ -7,14 +7,13 @@ export interface User {
 export interface AuthState {
     isAuthenticated: boolean;
     user: User | null;
-    token: string | null;
 }
 
 export type AuthAction =
-    | { type: 'LOGIN'; payload: { user: User; token: string } }
+    | { type: 'LOGIN'; payload: { user: User } }
     | { type: 'LOGOUT' };
 
 export type AuthContextType = AuthState & {
-    login: (user: User, token: string) => void;
+    login: (user: User) => void;
     logout: () => void;
 };

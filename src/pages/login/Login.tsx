@@ -45,7 +45,7 @@ const Login = () => {
                 },
             } as CustomAxiosRequestConfig);
 
-            login(result.data.user, result.data.token)
+            login(result.data.user)
 
             navigate('/'); // Redirect to home after successful login
         } catch (error) {
