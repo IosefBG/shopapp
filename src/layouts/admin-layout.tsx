@@ -1,10 +1,18 @@
 // src/layouts/AdminLayout.tsx
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Drawer, IconButton, Box, CssBaseline, AppBar, Toolbar, Typography, Tooltip, Avatar } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faHome, faUser, faCog, faSignOutAlt, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import React, {useState} from 'react';
+import {Outlet} from 'react-router-dom';
+import {Drawer, IconButton, Box, CssBaseline, AppBar, Toolbar, Typography, Tooltip, Avatar} from '@mui/material';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {
+    faChevronLeft,
+    faChevronRight,
+    faHome,
+    faUser,
+    faCog,
+    faSignOutAlt,
+    faEllipsisV
+} from '@fortawesome/free-solid-svg-icons';
+import {Link} from 'react-router-dom';
 import styles from './AdminLayout.module.css';
 import {useAuth} from "../contexts/AuthContext.tsx";
 
@@ -19,44 +27,52 @@ const AdminLayout: React.FC = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh' }}>
-            <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap component="div">
-                        Admin Dashboard
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+        <>
+            <Box sx={{ display: 'flex', height: '100vh', marginTop: '40px' }}>
+                <CssBaseline />
+                <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+                    <Toolbar>
+                        <Typography variant="h6" noWrap component="div">
+                            Admin Dashboard
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
 
-            <Drawer
-                variant="permanent"
-                open={isExpanded}
-                sx={{
-                    width: isExpanded ? drawerWidth : 85,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
+                <Drawer
+                    variant="permanent"
+                    open={isExpanded}
+                    sx={{
                         width: isExpanded ? drawerWidth : 85,
-                        transition: 'width 0.3s',
-                    },
-                }}
-            >
-                <SidebarContent isExpanded={isExpanded} toggleSidebar={toggleSidebar} user={user} />
-            </Drawer>
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: isExpanded ? drawerWidth : 85,
+                            transition: 'width 0.3s',
+                        },
+                    }}
+                >
+                    <SidebarContent isExpanded={isExpanded} user={user} />
+                </Drawer>
 
-            <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, overflow: 'auto' }}>
-                <Outlet />
+                <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, overflow: 'auto' }}>
+                    <Outlet />
+                </Box>
             </Box>
-        </Box>
+            <IconButton
+                onClick={toggleSidebar}
+                className={`${styles.sidebarButton} ${!isExpanded ? styles.collapsed : ''}`}
+            >
+                <FontAwesomeIcon icon={isExpanded ? faChevronLeft : faChevronRight} />
+            </IconButton>
+        </>
     );
 };
 
-const SidebarContent = ({ isExpanded, toggleSidebar, user }) => {
+const SidebarContent = ({isExpanded, user}) => {
     const sidebarItems = [
-        { path: '/', icon: faHome, label: 'Go back' },
-        { path: '/profile', icon: faUser, label: 'Profile' },
-        { path: '/settings', icon: faCog, label: 'Settings' },
-        { path: '/logout', icon: faSignOutAlt, label: 'Logout' },
+        {path: '/', icon: faHome, label: 'Go back'},
+        {path: '/admin/profile', icon: faUser, label: 'Profile'},
+        {path: '/settings', icon: faCog, label: 'Settings'},
+        {path: '/logout', icon: faSignOutAlt, label: 'Logout'},
     ];
 
     const stringToColor = (string) => {
@@ -85,26 +101,22 @@ const SidebarContent = ({ isExpanded, toggleSidebar, user }) => {
                 {sidebarItems.map((item) => (
                     <Tooltip key={item.label} title={!isExpanded ? item.label : ''} placement="right">
                         <Link to={item.path} className={styles.sidebarItem}>
-                            <FontAwesomeIcon icon={item.icon} className={styles.sidebarItemIcon} />
+                            <FontAwesomeIcon icon={item.icon} className={styles.sidebarItemIcon}/>
                             {isExpanded && <span className={styles.sidebarItemLabel}>{item.label}</span>}
                         </Link>
                     </Tooltip>
                 ))}
             </Box>
 
-            <IconButton onClick={toggleSidebar} className={styles.sidebarButton}>
-                <FontAwesomeIcon icon={isExpanded ? faChevronLeft : faChevronRight} />
-            </IconButton>
-
             <Box className={styles.userArea}>
-                <Avatar {...stringAvatar(user.username)} style={{ marginRight: '10px' }} />
+                <Avatar {...stringAvatar(user.username)} style={{marginRight: '10px'}}/>
                 {isExpanded && (
                     <>
                         <Box className={styles.userInfo}>
                             <Typography className={styles.userName}>{user.username}</Typography>
                             <Typography className={styles.userEmail}>{user.email}</Typography>
                         </Box>
-                        <FontAwesomeIcon icon={faEllipsisV} className={styles.userOptions} />
+                        <FontAwesomeIcon icon={faEllipsisV} className={styles.userOptions}/>
                     </>
                 )}
             </Box>

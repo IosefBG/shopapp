@@ -9,16 +9,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [state, dispatch] = useReducer(authReducer, {
         isAuthenticated: false,
         user: null,
-        token: null,
     });
 
-    const login = (user: User, token: string) => {
-        localStorage.setItem('token', token);
-        dispatch({type: LOGIN, payload: {user, token}});
+    const login = (user: User) => {
+        dispatch({type: LOGIN, payload: {user}});
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
         dispatch({type: LOGOUT});
     };
 

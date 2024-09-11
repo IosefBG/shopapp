@@ -12,6 +12,7 @@
 }
 
 .sidebarItemsContainer {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -46,21 +47,33 @@
     white-space: nowrap;
 }
 
+/* Button Positioning */
 .sidebarButton {
-    align-self: center;
+    position: fixed !important; /* Fixed positioning to stay in viewport */
+    top: 100px; /* Adjust as needed */
+    left: 220px; /* Adjust as needed */
+    width: 40px; /* Diameter of the circle */
+    height: 40px; /* Diameter of the circle */
     background-color: #1ABC9C;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 50%; /* Circular button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 10px 0;
+    transition: background-color 0.3s ease, top 0.3s ease, left 0.3s ease;
+    z-index: 9999 !important; /* Ensure it's above other elements */
 }
 
 .sidebarButton:hover {
     background-color: #16A085;
 }
+
+.sidebarButton.collapsed {
+    left: 65px; /* Adjust as needed */
+}
+
 
 /* Separator Line */
 .separator {

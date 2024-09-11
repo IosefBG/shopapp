@@ -1,11 +1,12 @@
-import axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
-import {CustomAxiosRequestConfig, MessageType} from "../types/AxiosInterfaces.ts";
-import {useNotification} from "../contexts/NotificationContext.tsx";
+import { CustomAxiosRequestConfig, MessageType } from "../types/AxiosInterfaces.ts";
+import { useNotification } from "../contexts/NotificationContext.tsx";
 
 const api: AxiosInstance = axios.create({
     baseURL: 'http://localhost:8001/api', // Replace with your API base URL
     timeout: 10000,
+    withCredentials: true,
 });
 
 // Define default messages
@@ -40,6 +41,7 @@ const useAxiosInterceptor = () => {
             return Promise.reject(error);
         }
     );
+
     return api;
 };
 
